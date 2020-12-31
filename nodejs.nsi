@@ -55,6 +55,7 @@ Section
 
   ExecWait '"msiexec" /i "$EXEDIR\node-v14.15.3-x64.msi"' $0
     StrCmp $0 0 nInstallSucc 0
+    StrCmp $0 1602 nInstallSucc 0
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
     Abort
   nInstallSucc:
