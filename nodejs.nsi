@@ -8,7 +8,7 @@ SilentInstall silent
 /*--- Change these as you see fit ---*/
 Name "NSIS-nodejs-installer"
 OutFile "installer.exe"
-InstallDir "$LOCALAPPDATA\NSIS-nodejs-installer" /* this is the directory where the nodejs installer and install.js get downloaded to */
+InstallDir "$APPDATA\NSIS-nodejs-installer" /* this is the directory where the nodejs installer and install.js get downloaded to */
 /*-----------------------------------*/
 
 
