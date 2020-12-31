@@ -45,6 +45,11 @@ Function .onInit
 FunctionEnd
 
 Section
+
+  nsExec::ExecToStack '"node" "-v"'
+    Pop $0
+    StrCpy $1 $0 1
+    StrCmp $1 "v" nInstallSucc 0
   /*gets nodejs - make sure to update regularly*/
   inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$EXEDIR\node-v14.15.3-x64.msi"
   Pop $0
