@@ -2,6 +2,8 @@
 /*=== !define MUI_ICON "${NSISDIR}\Contrib\Icons\Youriconname.ico ===*/
 
 RequestExecutionLevel admin ;
+Unicode true
+SilentInstall silent
 
 /*--- Change these as you see fit ---*/
 Name "NSIS-nodejs-installer"
@@ -9,8 +11,6 @@ OutFile "installer.exe"
 InstallDir "$LOCALAPPDATA\NSIS-nodejs-installer" /* this is the directory where the nodejs installer and install.js get downloaded to */
 /*-----------------------------------*/
 
-Unicode true
-SilentInstall silent
 
 Function .onInit
 /*--- Checks if already running installer: ---*/
