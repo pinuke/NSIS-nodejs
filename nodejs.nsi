@@ -78,4 +78,5 @@ Section
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed. Nodejs installed, but the installation script returned exit code $0. Click OK to abort install" /SD IDOK
     Quit
   jsInstallSucc:
+  Quit
 SectionEnd
