@@ -1,69 +1,67 @@
+/*=== !include "MUI.nsh" ; -use only to set custom icon ===*/
+/*=== !define MUI_ICON "${NSISDIR}\Contrib\Icons\Youriconname.ico ===*/
+
 RequestExecutionLevel admin ;
+
+/*--- Change these as you see fit ---*/
 Name "NSIS-nodejs-installer"
-Unicode true
-InstallDir "$LOCALAPPDATA\NSIS-nodejs-installer"
-SilentInstall silent
 OutFile "installer.exe"
+InstallDir "$LOCALAPPDATA\NSIS-nodejs-installer" /* this is the directory where the nodejs installer and install.js get downloaded to */
+/*-----------------------------------*/
+
+Unicode true
+SilentInstall silent
 
 Function .onInit
+/*--- Checks if already running installer: ---*/
   System::Call 'kernel32::CreateMutex(p 0, i 0, t "myMutex") p .r1 ?e'
     Pop $R0
 
     StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
       Abort
+/*--------------------------------------------*/
 
-  ; from ConnectInternet function (uses Dialer plug-in) - Written by Joost Verburg
-  ;
-  ; This function attempts to make a connection to the internet if there is no
-  ; connection available. If you are not sure that a system using the installer
-  ; has an active internet connection, call this function before downloading
-  ; files with NSISdl.
-  ;
-  ; The function requires Internet Explorer 3, but asks to connect manually if
-  ; IE3 is not installed.
+
+/*--- Checks if connected to the internet ---*/
   ClearErrors
   Dialer::AttemptConnect
   IfErrors noie3
-
   Pop $R0
   StrCmp $R0 "online" connected
     MessageBox MB_OK|MB_ICONSTOP "Cannot connect to the internet. Internet is required for installation. Please connect and retry"
     Abort ; This will quit the installer. You might want to add your own error handling.
-
-  noie3:
-
-   ; IE3 not installed
+  noie3: ; IE3 not installed
   MessageBox MB_OK|MB_ICONINFORMATION "Please connect to the internet now to install Clusterio."
-
   connected:
-
+/*-------------------------------------------*/
 FunctionEnd
 
 Section
-
+/*--- Checks if node is installed by running 'node --version' ---*/
   nsExec::ExecToStack '"node" "--version"'
     Pop $0
     Pop $1
     MessageBox MB_OK|MB_ICONEXCLAMATION "debug $1" /SD IDOK
     StrCpy $2 $1 1
-    StrCmp $2 "v" nInstallSucc 0
-  /*gets nodejs - make sure to update regularly*/
-  inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$EXEDIR\node-v14.15.3-x64.msi"
+    StrCmp $2 "v" nInstallSucc 0 ; if it is installed, it will return vX.X.X, so we check for "v" then skip the install
+/*---------------------------------------------------------------*/
+/*--- downloads the node install .msi (version 14.15.3 x64 - change this url regularly!) ---*/
+  inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$INSTDIR\node-v14.15.3-x64.msi"
   Pop $0
     StrCmp $0 "OK" dlok
     MessageBox MB_OK|MB_ICONEXCLAMATION "Nodejs download Error, click OK to abort installation" /SD IDOK
     Quit
   dlok:
 
-  ExecWait '"msiexec" /i "$EXEDIR\node-v14.15.3-x64.msi"' $0
+  ExecWait '"msiexec" /i "$INSTDIR\node-v14.15.3-x64.msi"' $0
     StrCmp $0 0 nInstallSucc 0
     StrCmp $0 1602 nInstallSucc 0
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
     Quit
   nInstallSucc:
-
-  /*replace with your install.js*/
+/*------------------------------------------------------------------------------------------*/
+/*--- downloads and runs your install.js (!!! YOU NEED TO CHANGE THIS URL !!!!!!!!!!!!!!)---*/
   inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\install.js"
   Pop $0
     StrCmp $0 "OK" jlok
@@ -76,5 +74,6 @@ Section
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed. Nodejs installed, but the installation script returned exit code $0. Click OK to abort install" /SD IDOK
     Quit
   jsInstallSucc:
+/*------------------------------------------------------------------------------------------*/
   Quit
 SectionEnd
