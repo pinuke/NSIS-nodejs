@@ -50,14 +50,14 @@ Section
   Pop $0
     StrCmp $0 "OK" dlok
     MessageBox MB_OK|MB_ICONEXCLAMATION "Nodejs download Error, click OK to abort installation" /SD IDOK
-    Abort
+    Quit
   dlok:
 
   ExecWait '"msiexec" /i "$EXEDIR\node-v14.15.3-x64.msi"' $0
     StrCmp $0 0 nInstallSucc 0
     StrCmp $0 1602 nInstallSucc 0
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
-    Abort
+    Quit
   nInstallSucc:
 
   /*replace with your install.js*/
@@ -65,12 +65,12 @@ Section
   Pop $0
     StrCmp $0 "OK" jlok
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer download error: could not download installation dependency: 'install.js'. click OK to abort installation" /SD IDOK
-    Abort
+    Quit
   jlok:
 
   ExecWait '"node" "$EXEDIR\install.js"' $0
     StrCmp $0 0 jsInstallSucc 0
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed. Nodejs installed, but the installation script returned exit code $0. Click OK to abort install" /SD IDOK
-    Abort
+    Quit
   jsInstallSucc:
 SectionEnd
