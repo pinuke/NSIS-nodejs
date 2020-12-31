@@ -2,7 +2,7 @@ RequestExecutionLevel admin ;
 Name "NSIS-nodejs-installer"
 Unicode true
 InstallDir "$LOCALAPPDATA\NSIS-nodejs-installer"
-SilentInstall silent
+/*SilentInstall silent*/
 OutFile "installer.exe"
 
 Function .onInit
