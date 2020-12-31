@@ -53,19 +53,19 @@ Section
     Abort
   dlok:
 
+  ExecWait '"msiexec" /i "$EXEDIR\node-v14.15.3-x64.msi"' $0
+    StrCmp $0 0 nInstallSucc 0
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
+    Abort
+  nInstallSucc:
+
   /*replace with your install.js*/
-  inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\nodejs-install.msi"
+  inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\install.js"
   Pop $0
     StrCmp $0 "OK" jlok
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer download error: could not download installation dependency: 'install.js'. click OK to abort installation" /SD IDOK
     Abort
   jlok:
-
-  ExecWait '"msiexec" /i "$EXEDIR\nodejs-install.msi"' $0
-    StrCmp $0 0 nInstallSucc 0
-    MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
-    Abort
-  nInstallSucc:
 
   ExecWait '"node" "$EXEDIR\install.js"' $0
     StrCmp $0 0 jsInstallSucc 0
