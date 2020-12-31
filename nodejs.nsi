@@ -46,7 +46,7 @@ FunctionEnd
 
 Section
 
-  nsExec::ExecToStack '"node" "-v"'
+  nsExec::Exec '"node" "--version"'
     Pop $0
     MessageBox MB_OK|MB_ICONEXCLAMATION "debug $0" /SD IDOK
     StrCpy $1 $0 1
