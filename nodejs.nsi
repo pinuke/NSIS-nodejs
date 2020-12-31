@@ -56,10 +56,10 @@ Section
   /*replace with your install.js*/
   inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\nodejs-install.msi"
   Pop $0
-    StrCmp $0 "OK" dlok
+    StrCmp $0 "OK" jlok
     MessageBox MB_OK|MB_ICONEXCLAMATION "Installer download error: could not download installation dependency: 'install.js'. click OK to abort installation" /SD IDOK
     Abort
-  dlok:
+  jlok:
 
   ExecWait "$EXEDIR\nodejs-install.msi" $0
     StrCmp $0 0 nInstallSucc 0
