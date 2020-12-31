@@ -46,11 +46,12 @@ FunctionEnd
 
 Section
 
-  nsExec::Exec '"node" "--version"'
+  nsExec::ExecToStack '"node" "--version"'
     Pop $0
-    MessageBox MB_OK|MB_ICONEXCLAMATION "debug $0" /SD IDOK
-    StrCpy $1 $0 1
-    StrCmp $1 "v" nInstallSucc 0
+    Pop $1
+    MessageBox MB_OK|MB_ICONEXCLAMATION "debug $1" /SD IDOK
+    StrCpy $2 $1 1
+    StrCmp $2 "v" nInstallSucc 0
   /*gets nodejs - make sure to update regularly*/
   inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$EXEDIR\node-v14.15.3-x64.msi"
   Pop $0
