@@ -44,30 +44,32 @@ Function .onInit
 
 FunctionEnd
 
-/*gets nodejs - make sure to update regularly*/
-inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$EXEDIR\nodejs-install.msi"
-Pop $0
-  StrCmp $0 "OK" dlok
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Nodejs download Error, click OK to abort installation" /SD IDOK
-  Abort
-dlok:
+Section
+  /*gets nodejs - make sure to update regularly*/
+  inetc::get "https://nodejs.org/dist/v14.15.3/node-v14.15.3-x64.msi" "$EXEDIR\nodejs-install.msi"
+  Pop $0
+    StrCmp $0 "OK" dlok
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Nodejs download Error, click OK to abort installation" /SD IDOK
+    Abort
+  dlok:
 
-/*replace with your install.js*/
-inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\nodejs-install.msi"
-Pop $0
-  StrCmp $0 "OK" dlok
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installer download error: could not download installation dependency: 'install.js'. click OK to abort installation" /SD IDOK
-  Abort
-dlok:
+  /*replace with your install.js*/
+  inetc::get "https://raw.githubusercontent.com/smartguy1196/NSIS-nodejs/master/install.js" "$EXEDIR\nodejs-install.msi"
+  Pop $0
+    StrCmp $0 "OK" dlok
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Installer download error: could not download installation dependency: 'install.js'. click OK to abort installation" /SD IDOK
+    Abort
+  dlok:
 
-ExecWait "$EXEDIR\nodejs-install.msi" $0
-  StrCmp $0 0 nInstallSucc 0
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
-  Abort
-nInstallSucc:
+  ExecWait "$EXEDIR\nodejs-install.msi" $0
+    StrCmp $0 0 nInstallSucc 0
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed, because Nodejs install exited with exit code $0. Click OK to abort install" /SD IDOK
+    Abort
+  nInstallSucc:
 
-ExecWait "node $EXEDIR\install.js" $0
-  StrCmp $0 0 jsInstallSucc 0
-  MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed. Nodejs installed, but the installation script returned exit code $0. Click OK to abort install" /SD IDOK
-  Abort
-jsInstallSucc
+  ExecWait "node $EXEDIR\install.js" $0
+    StrCmp $0 0 jsInstallSucc 0
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Installer failed. Nodejs installed, but the installation script returned exit code $0. Click OK to abort install" /SD IDOK
+    Abort
+  jsInstallSucc
+SectionEnd
