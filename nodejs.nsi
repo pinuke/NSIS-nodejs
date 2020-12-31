@@ -3,7 +3,7 @@
 
 RequestExecutionLevel admin ;
 Unicode true
-/*SilentInstall silent*/
+SilentInstall silent
 
 /*--- Change these as you see fit ---*/
 Name "NSIS-nodejs-installer"
