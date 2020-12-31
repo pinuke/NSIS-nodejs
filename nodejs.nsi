@@ -48,6 +48,7 @@ Section
 
   nsExec::ExecToStack '"node" "-v"'
     Pop $0
+    MessageBox MB_OK|MB_ICONEXCLAMATION "debug $0" /SD IDOK
     StrCpy $1 $0 1
     StrCmp $1 "v" nInstallSucc 0
   /*gets nodejs - make sure to update regularly*/
