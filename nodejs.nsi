@@ -38,6 +38,7 @@ Function .onInit
 FunctionEnd
 
 Section
+  CreateDirectory "$INSTDIR"
 /*--- Checks if node is installed by running 'node --version' ---*/
   nsExec::ExecToStack '"node" "--version"'
     Pop $0
