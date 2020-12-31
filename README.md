@@ -1,3 +1,3 @@
 Compile nodejs.nsi with the makensis command to compile installer
 
-Requires inetc plugin for NSIS to compile!
+Requires inetc and nsexec plugins for NSIS to compile!
