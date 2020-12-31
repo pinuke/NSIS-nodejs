@@ -12,7 +12,7 @@ Function .onInit
     StrCmp $R0 0 +3
       MessageBox MB_OK|MB_ICONEXCLAMATION "The installer is already running."
       Abort
-   /* remove this message and replace it in install.js */
+  /* todo: remove this message and replace it in install.js */
   MessageBox MB_YESNO "This will install Clusterio and nodejs/npm (if not already installed). Continue?" IDYES NoAbort
     Abort ; causes installer to quit.
   NoAbort:
